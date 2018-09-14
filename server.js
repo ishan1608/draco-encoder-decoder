@@ -31,8 +31,8 @@ http.createServer(function (req, res) {
         // res.end('not inside public folder for my implementation');
         // console.log(parts.path);
 
-        switch (parts.path) {
-            case '/':
+        switch (true) {
+            case parts.path === '/':
                 // Read the index file and send it to the user
                 fs.readFile('index.html', function(error, data) {
                     if(error) {
@@ -43,7 +43,7 @@ http.createServer(function (req, res) {
                     }
                 });
                 break;
-            case '/upload':
+            case parts.path === '/upload':
                 var form = new formidable.IncomingForm();
                 form.keepExtensions = true;
                 form.maxFileSize = 1024 * 1024 * 1024;
@@ -90,6 +90,17 @@ http.createServer(function (req, res) {
                             res.end();
                         });
                     });
+                });
+                break;
+            case parts.path.split('?')[0] === '/display/':
+                // Read the index file and send it to the user
+                fs.readFile('display.html', function(error, data) {
+                    if(error) {
+                        console.log('Error reading file :\n' + error);
+                    } else {
+                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                        res.end(data);
+                    }
                 });
                 break;
             default:
