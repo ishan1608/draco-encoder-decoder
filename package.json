@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ishan1608/draco-encoder-decoder#readme",
   "dependencies": {
-    "formidable": "^1.2.1"
+    "formidable": "^1.2.1",
+    "node-static": "^0.7.10"
   }
 }
