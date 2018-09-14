@@ -160,3 +160,7 @@ modules.xml
 # Draco
 /draco_build
 /draco
+
+# Uploads
+public/uploads/*
+!public/uploads/.gitkeep

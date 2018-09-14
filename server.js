@@ -2,8 +2,8 @@ var nodeStatic = require('node-static');
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
-// var formidable = require('formidable');
-// var util = require('util');
+var formidable = require('formidable');
+var util = require('util');
 // var request = require('request');
 // var mongo = require('mongodb');
 
@@ -43,26 +43,35 @@ http.createServer(function (req, res) {
                 });
                 break;
             case '/upload':
-                // var form = new formidable.IncomingForm();
-                // form.parse(req, function(err, fields, files) {
-                //     res.writeHead(200, {'content-type': 'text/plain'});
-                //     if(fields.RegistrationID === undefined) {
-                //         res.end('Oops Something went wrong. There was no registration ID detected for your device.\nPlease contact the administrators.');
-                //     } else {
-                //         // MongoDB server connection to store IDs
-                //         mongo.Db.connect(mongoUri, function (err, db) {
-                //             db.collection('userIds', function(err, collection) {
-                //                 collection.insert({'id': fields.RegistrationID, 'facebookId': fields.FacebookID, 'name': fields.Name, 'email': fields.Email}, {safe: true}, function(err, rs) {
-                //                     if(err) {
-                //                         res.end("\nUser Registration Failed.\n" + err);
-                //                     } else if(rs) {
-                //                         res.end("\nUser Registered successfully :\nRegistration ID : " + fields.RegistrationID + "\n\nResult : \n" + rs);
-                //                     }
-                //                 });
-                //             });
-                //         });
-                //     }
-                // });
+                var form = new formidable.IncomingForm();
+                form.keepExtensions = true;
+                form.maxFileSize = 1024 * 1024 * 1024;
+                form.parse(req, function(err, fields, files) {
+                    // res.writeHead(200, {'content-type': 'text/plain'});
+                    // if(fields.RegistrationID === undefined) {
+                    //     res.end('Oops Something went wrong. There was no registration ID detected for your device.\nPlease contact the administrators.');
+                    // } else {
+                    //     // MongoDB server connection to store IDs
+                    //     mongo.Db.connect(mongoUri, function (err, db) {
+                    //         db.collection('userIds', function(err, collection) {
+                    //             collection.insert({'id': fields.RegistrationID, 'facebookId': fields.FacebookID, 'name': fields.Name, 'email': fields.Email}, {safe: true}, function(err, rs) {
+                    //                 if(err) {
+                    //                     res.end("\nUser Registration Failed.\n" + err);
+                    //                 } else if(rs) {
+                    //                     res.end("\nUser Registered successfully :\nRegistration ID : " + fields.RegistrationID + "\n\nResult : \n" + rs);
+                    //                 }
+                    //             });
+                    //         });
+                    //     });
+                    // }
+
+                    var objFile = files['obj_file'];
+                    fs.createReadStream(objFile.path).pipe(fs.createWriteStream('public/uploads/' + objFile.name));
+
+                    res.writeHead(200, {'content-type': 'text/plain'});
+                    res.write('received upload:\n\n');
+                    res.end(util.inspect({fields: fields, files: files}));
+                });
                 break;
             default:
                 console.log("Sorry, we are out of " + parts.path + ".");
