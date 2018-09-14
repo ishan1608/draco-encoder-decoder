@@ -1,0 +1,22 @@
+{
+  "name": "draco-encoder-decoder",
+  "version": "1.0.0",
+  "description": "Draco Encoder and Decoder. A service which takes a 3D model, encodes it using draco and renders it on the browser.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ishan1608/draco-encoder-decoder.git"
+  },
+  "keywords": [
+    "draco"
+  ],
+  "author": "Ishan <ishan1608@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ishan1608/draco-encoder-decoder/issues"
+  },
+  "homepage": "https://github.com/ishan1608/draco-encoder-decoder#readme"
+}
