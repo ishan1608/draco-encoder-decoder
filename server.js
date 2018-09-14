@@ -1,7 +1,7 @@
 var nodeStatic = require('node-static');
 var http = require('http');
 var url = require('url');
-// var fs = require('fs');
+var fs = require('fs');
 // var formidable = require('formidable');
 // var util = require('util');
 // var request = require('request');
@@ -32,20 +32,15 @@ http.createServer(function (req, res) {
 
         switch (parts.path) {
             case '/':
-                // Read the file and send it to the user
-                // fs.readFile('form.html', function(error, data) {
-                //     if(error) {
-                //         console.log('Error reading file :\n' + error);
-                //     } else {
-                //         res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-                //         res.end(data);
-                //     }
-                // });
-                res.writeHead(200, {
-                    'Content-Type': 'text/plain; charset=utf-8'
+                // Read the index file and send it to the user
+                fs.readFile('index.html', function(error, data) {
+                    if(error) {
+                        console.log('Error reading file :\n' + error);
+                    } else {
+                        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+                        res.end(data);
+                    }
                 });
-                res.write('Hello World!!');
-                res.end();
                 break;
             case '/upload':
                 // var form = new formidable.IncomingForm();
