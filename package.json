@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ishan1608/draco-encoder-decoder/issues"
   },
-  "homepage": "https://github.com/ishan1608/draco-encoder-decoder#readme"
+  "homepage": "https://github.com/ishan1608/draco-encoder-decoder#readme",
+  "dependencies": {
+    "formidable": "^1.2.1"
+  }
 }
