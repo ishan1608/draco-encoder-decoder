@@ -92,8 +92,6 @@ function render() {
     renderer.render(scene, camera);
 }
 
-
-
 // Global Draco decoder type.
 let dracoDecoderType = {};
 let dracoLoader;
@@ -101,7 +99,6 @@ let currentDecoder;
 
 function createDracoDecoder() {
     dracoLoader = new THREE.DRACOLoader();
-    // dracoLoader.setDracoDecoderType(dracoDecoderType);
 }
 
 // bufferGeometry is a geometry decoded by DRACOLoader.js
@@ -118,15 +115,11 @@ function onDecode(bufferGeometry) {
 
 createDracoDecoder();
 
-
-
 window.onload = function() {
-
     threejsInit();
     threejsAnimate();
 
     // Load the 3d model asynchronously
-    // dracoLoader.loadAjax('/models/spider/Only_Spider_with_Animations_Export.drc', onDecode);
     var url = new URL(window.location.href);
     var objFile = url.searchParams.get('file');
     dracoLoader.loadAjax('/public/uploads/' + objFile + '.drc', onDecode);
