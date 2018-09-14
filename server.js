@@ -6,6 +6,7 @@ var formidable = require('formidable');
 var util = require('util');
 // var request = require('request');
 // var mongo = require('mongodb');
+var exec = require('child_process').exec;
 
 var staticServer = new(nodeStatic.Server)();
 
@@ -66,10 +67,29 @@ http.createServer(function (req, res) {
                     // }
 
                     var objFile = files['obj_file'];
-                    fs.createReadStream(objFile.path).pipe(fs.createWriteStream('public/uploads/' + objFile.name));
+                    fs.createReadStream(objFile.path).pipe(
+                        fs.createWriteStream('public/uploads/' + objFile.name)
+                    ).on('error', function(error) {
+                        res.writeHead(500, {
+                            'Content-Type': 'text/plain; charset=utf-8;'
+                        });
+                        return res.end(util.inspect(error));
+                    }).on('finish', function() {
+                        var objFileNameWithoutExtension = objFile.name.split('.')[0];
+                        // exec(command, function(error, stdout, stderr){ callback(stdout); });
+                        console.log('./draco_build/draco_encoder -i public/uploads/' + objFile.name + ' -o ' + objFileNameWithoutExtension + '.drc');
+                        exec('./draco_build/draco_encoder -i public/uploads/' + objFile.name + ' -o public/uploads/' + objFileNameWithoutExtension + '.drc', function(error, stdout, stderr) {
+                            if (error) {
+                                res.writeHead(400, {
+                                    'Content-Type': 'text/plain; charset=utf-8;'
+                                });
+                                return res.end(util.inspect(stdout));
+                            }
 
-                    res.writeHead(302, {'Location': '/display/?file=' + objFile.name});
-                    res.end();
+                            res.writeHead(302, {'Location': '/display/?file=' + objFileNameWithoutExtension});
+                            res.end();
+                        });
+                    });
                 });
                 break;
             default:
