@@ -121,7 +121,7 @@ window.onload = function() {
 
     // Load the 3d model asynchronously
     var url = new URL(window.location.href);
-    var objFile = url.searchParams.get('file');
-    dracoLoader.loadAjax('/public/uploads/' + objFile + '.drc', onDecode);
+    var drcFile = url.searchParams.get('file');
+    dracoLoader.loadAjax(drcFile, onDecode);
 
 };

@@ -5,10 +5,15 @@ var fs = require('fs');
 var formidable = require('formidable');
 var util = require('util');
 var exec = require('child_process').exec;
+var AWS = require('aws-sdk');
+const s3 = new AWS.S3({
+    accessKeyId: '',
+    secretAccessKey: ''
+});
 
 var staticServer = new(nodeStatic.Server)();
 
-var port = Number(process.env.PORT || 8000);
+var port = Number(process.env.PORT || 8002);
 
 http.createServer(function (req, res) {
     // Testing for public folder for static hosting
@@ -57,8 +62,30 @@ http.createServer(function (req, res) {
                                 return res.end(util.inspect(stdout));
                             }
 
-                            res.writeHead(302, {'Location': '/display/?file=' + objFileNameWithoutExtension});
-                            res.end();
+                            fs.readFile('public/uploads/' + objFileNameWithoutExtension + '.drc', function(err, data) {
+                                if (err) {
+                                    res.writeHead(500, {
+                                        'Content-Type': 'text/plain; charset=utf-8;'
+                                    });
+                                    return res.end(util.inspect(err));
+                                }
+                                const params = {
+                                    Bucket: 'draco-encoder-decoder',
+                                    Key: objFileNameWithoutExtension + '.drc',
+                                    Body: data
+                                };
+                                s3.upload(params, function(s3Err, data) {
+                                    if (s3Err) {
+                                        res.writeHead(500, {
+                                            'Content-Type': 'text/plain; charset=utf-8;'
+                                        });
+                                        return res.end(util.inspect(s3Err));
+                                    }
+                                    console.log('File uploaded successfully at ' + data.Location);
+                                    res.writeHead(302, {'Location': '/display/?file=' + data.Location});
+                                    res.end();
+                                });
+                            });
                         });
                     });
                 });
