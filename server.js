@@ -13,7 +13,7 @@ const s3 = new AWS.S3({
 
 var staticServer = new(nodeStatic.Server)();
 
-var port = Number(process.env.PORT || 8000);
+var port = Number(process.env.PORT || 8002);
 
 http.createServer(function (req, res) {
     // Testing for public folder for static hosting
