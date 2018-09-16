@@ -2,9 +2,10 @@
   "name": "draco-encoder-decoder",
   "version": "1.0.0",
   "description": "Draco Encoder and Decoder. A service which takes a 3D model, encodes it using draco and renders it on the browser.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
