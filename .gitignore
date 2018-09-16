@@ -158,9 +158,11 @@ modules.xml
 # End of https://www.gitignore.io/api/node,webstorm+all
 
 # Draco
-/draco_build
+/draco_build/*
 /draco
+# Draco Encoder
+!/draco_build/draco_encoder
 
 # Uploads
 public/uploads/*
-!public/uploads/.gitkeep
+!/public/uploads/.gitkeep
